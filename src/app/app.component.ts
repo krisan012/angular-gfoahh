@@ -28,6 +28,14 @@ export class AppComponent {
 
   checkCountry(country: string):void{
     this.isAustralian = country === "Australia";
+
+    if(country === "Australia")
+    {
+      this.isAustralian = true;
+    } else {
+      this.isAustralian = false;
+      this.state = '';
+    }
   }
 
   onSubmit(form: any):void {

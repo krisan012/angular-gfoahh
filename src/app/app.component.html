@@ -1,3 +1,6 @@
+<!-- Test 1: Create a customer form with validation -->
+
+
 <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm.value)">
   <input
     type="text"
@@ -6,12 +9,16 @@
     required
     [(ngModel)]="firstName"
     #firstNameModel="ngModel"
-    placeholder="first name"
+    placeholder="first name*"
   />
-  <span *ngIf="firstNameModel.invalid" class="error">First Name is required</span>
+  <div *ngIf="submitted && userForm.invalid">
+    <span *ngIf="firstNameModel.invalid" class="error"
+      >First Name is required</span
+    >
+  </div>
 
-  <br>
-  <br>
+  <br />
+  <br />
   <input
     type="text"
     name="lastName"
@@ -19,10 +26,16 @@
     required
     [(ngModel)]="lastName"
     #lastNameModel="ngModel"
-    placeholder="Last name"
+    placeholder="Last name*"
   />
-  <br>
-  <br>
+  <div *ngIf="submitted && userForm.invalid">
+    <span *ngIf="lastNameModel.invalid" class="error"
+      >Last Name is required</span
+    >
+  </div>
+
+  <br />
+  <br />
   <input
     type="text"
     name="jobTitle"
@@ -31,8 +44,10 @@
     [(ngModel)]="jobTitle"
     placeholder="Job Title"
   />
-  <br>
-  <br>
+
+  
+  <br />
+  <br />
   <input
     type="email"
     name="email"
@@ -40,10 +55,16 @@
     required
     [(ngModel)]="email"
     #emailModel="ngModel"
-    placeholder="Email"
+    email
+    placeholder="Email*"
   />
-  <br>
-  <br>
+  <div *ngIf="submitted && userForm.invalid">
+    <span *ngIf="emailModel.errors?.required" class="error">Email is required</span>
+    <span *ngIf="emailModel.errors?.email" class="error">Email is invalid</span>
+  </div>
+
+  <br />
+  <br />
   <input
     type="tel"
     name="telephone"
@@ -51,11 +72,15 @@
     required
     [(ngModel)]="telephone"
     #telephoneModel="ngModel"
-    placeholder="Telephone"
+    placeholder="Telephone*"
   />
+  <div *ngIf="submitted && userForm.invalid">
+    <span *ngIf="telephoneModel.invalid" class="error">Telephone is required</span>
+  </div>
 
-  <br>
-  <br>
+  <br />
+  <br />
+  <!-- eg: https://google.com -->
   <input
     type="url"
     name="webAddress"
@@ -63,27 +88,56 @@
     required
     [(ngModel)]="webAddress"
     #webAddressModel="ngModel"
-    placeholder="Web Address"
+    pattern="https?://.+"
+    placeholder="Web Address*"
   />
+  <div *ngIf="submitted && userForm.invalid">
+    <span *ngIf="webAddressModel.errors?.required" class="error">Web Address is required</span>
+    <span *ngIf="webAddressModel.errors?.pattern" class="error">Web Address is invalid</span>
+  </div>
 
-  <br>
-  <br>
+  <br />
+  <br />
 
-  <select name="country" id="country" required [(ngModel)]="country" (change)="checkCountry(country)" #countryModel="ngModel">
-    <option value="">Select Country</option>
-    <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+  <select
+    name="country"
+    id="country"
+    required
+    [(ngModel)]="country"
+    (change)="checkCountry(country)"
+    #countryModel="ngModel"
+  >
+    <option value="">Select Country*</option>
+    <option *ngFor="let country of countries" [value]="country">
+      {{ country }}
+    </option>
   </select>
-  
-  <br>
-  <br>
+  <div *ngIf="submitted && userForm.invalid">
+    <span *ngIf="countryModel.invalid" class="error">Country is required</span>
+  </div>
 
-  <select name="state" id="state" required [(ngModel)]="state" [disabled]="!isAustralian" #stateModel="ngModel">
+  <br />
+  <br />
+
+  <select
+    name="state"
+    id="state"
+    required
+    [(ngModel)]="state"
+    [disabled]="!isAustralian"
+    #stateModel="ngModel"
+  >
     <option value="">Select State</option>
-    <option *ngFor="let state of australianStates" [value]="state">{{ state }}</option>
+    <option *ngFor="let state of australianStates" [value]="state">
+      {{ state }}
+    </option>
   </select>
+  <div *ngIf="submitted && userForm.invalid">
+    <span *ngIf="isAustralian && stateModel.invalid" class="error">State is required</span>
+  </div>
 
-  <br>
-  <br>
+  <br />
+  <br />
 
   <button type="submit">Submit</button>
 </form>
